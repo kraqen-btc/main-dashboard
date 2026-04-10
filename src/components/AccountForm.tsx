@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import type { Account } from '../types';
 
+type AccountFormData = Omit<Account, 'id' | 'stakeBalance' | 'polymBalance' | 'totalBalance'>;
+
 interface AccountFormProps {
-  onSave: (account: Omit<Account, 'id'>) => void;
+  onSave: (account: AccountFormData) => void;
   onCancel: () => void;
 }
 
 export function AccountForm({ onSave, onCancel }: AccountFormProps) {
-  const [formData, setFormData] = useState<Omit<Account, 'id'>>({
+  const [formData, setFormData] = useState<AccountFormData>({
     name: '',
     stakeDeposit: { network: '', address: '' },
     polymDeposit: { network: '', address: '' },
