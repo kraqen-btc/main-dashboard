@@ -6,7 +6,7 @@ import { AccountForm } from './components/AccountForm';
 import { BalanceForm } from './components/BalanceForm';
 import { SnapshotHistory } from './components/SnapshotHistory';
 
-const API_URL = 'http://localhost:3001/api';
+const API_URL = '/api';
 
 const externalLinks: ExternalLink[] = [
   { name: 'BETRAGE', url: 'http://68.183.211.46:8000/' },

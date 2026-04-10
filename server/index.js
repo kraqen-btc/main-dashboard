@@ -2,12 +2,20 @@ import 'dotenv/config';
 import express from 'express';
 import pg from 'pg';
 import cors from 'cors';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const { Pool } = pg;
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Production'da frontend'i serve et
+app.use(express.static(join(__dirname, '../dist')));
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -285,10 +293,15 @@ app.get('/api/snapshots/stats', async (req, res) => {
   }
 });
 
-const PORT = 3001;
+// SPA fallback - tüm diğer route'ları index.html'e yönlendir
+app.get('*', (req, res) => {
+  res.sendFile(join(__dirname, '../dist/index.html'));
+});
+
+const PORT = process.env.PORT || 3001;
 
 initDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT}`);
   });
 });
