@@ -4,6 +4,7 @@ import pg from 'pg';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { existsSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,8 +15,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 // Production'da frontend'i serve et
-app.use(express.static(join(__dirname, '../dist')));
+const distPath = join(__dirname, '../dist');
+console.log('Dist path:', distPath);
+console.log('Dist exists:', existsSync(distPath));
+app.use(express.static(distPath));
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -295,7 +304,12 @@ app.get('/api/snapshots/stats', async (req, res) => {
 
 // SPA fallback - tüm diğer route'ları index.html'e yönlendir
 app.use((req, res) => {
-  res.sendFile(join(__dirname, '../dist/index.html'));
+  const indexPath = join(__dirname, '../dist/index.html');
+  if (existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).json({ error: 'Frontend not built. Run npm run build first.', path: indexPath });
+  }
 });
 
 const PORT = process.env.PORT || 3001;
