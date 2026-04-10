@@ -9,52 +9,28 @@ interface AccountFormProps {
 }
 
 export function AccountForm({ onSave, onCancel }: AccountFormProps) {
-  const [formData, setFormData] = useState<AccountFormData>({
-    name: '',
-    stakeDeposit: { network: '', address: '' },
-    polymDeposit: { network: '', address: '' },
-    stakeWithdraw: { network: '', address: '' },
-    polymWithdraw: { network: '', address: '' },
-  });
+  const [name, setName] = useState('');
+  const [stakeDepositNetwork, setStakeDepositNetwork] = useState('');
+  const [stakeDepositAddress, setStakeDepositAddress] = useState('');
+  const [polymDepositNetwork, setPolymDepositNetwork] = useState('');
+  const [polymDepositAddress, setPolymDepositAddress] = useState('');
+  const [stakeWithdrawNetwork, setStakeWithdrawNetwork] = useState('');
+  const [stakeWithdrawAddress, setStakeWithdrawAddress] = useState('');
+  const [polymWithdrawNetwork, setPolymWithdrawNetwork] = useState('');
+  const [polymWithdrawAddress, setPolymWithdrawAddress] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    onSave({
+      name,
+      stakeDeposit: { network: stakeDepositNetwork, address: stakeDepositAddress },
+      polymDeposit: { network: polymDepositNetwork, address: polymDepositAddress },
+      stakeWithdraw: { network: stakeWithdrawNetwork, address: stakeWithdrawAddress },
+      polymWithdraw: { network: polymWithdrawNetwork, address: polymWithdrawAddress },
+    });
   };
 
   const inputClass = "w-full bg-[#0d1117] border border-gray-700 rounded px-2.5 py-1.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500";
-
-  const AddressField = ({
-    label,
-    value,
-    onChange
-  }: {
-    label: string;
-    value: { network: string; address: string };
-    onChange: (val: { network: string; address: string }) => void;
-  }) => (
-    <div>
-      <label className="block text-xs text-gray-400 mb-1">{label}</label>
-      <div className="grid grid-cols-4 gap-2">
-        <input
-          type="text"
-          value={value.network}
-          onChange={(e) => onChange({ ...value, network: e.target.value })}
-          className={inputClass}
-          placeholder="TRC20"
-          required
-        />
-        <input
-          type="text"
-          value={value.address}
-          onChange={(e) => onChange({ ...value, address: e.target.value })}
-          className={`${inputClass} col-span-3`}
-          placeholder="Adres"
-          required
-        />
-      </div>
-    </div>
-  );
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
@@ -73,37 +49,101 @@ export function AccountForm({ onSave, onCancel }: AccountFormProps) {
             <label className="block text-xs text-gray-400 mb-1">Hesap Adi</label>
             <input
               type="text"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className={inputClass}
               placeholder="Ana Hesap"
               required
             />
           </div>
 
-          <AddressField
-            label="STAKE Deposit"
-            value={formData.stakeDeposit}
-            onChange={(val) => setFormData({ ...formData, stakeDeposit: val })}
-          />
+          <div>
+            <label className="block text-xs text-gray-400 mb-1">STAKE Deposit</label>
+            <div className="grid grid-cols-4 gap-2">
+              <input
+                type="text"
+                value={stakeDepositNetwork}
+                onChange={(e) => setStakeDepositNetwork(e.target.value)}
+                className={inputClass}
+                placeholder="TRC20"
+                required
+              />
+              <input
+                type="text"
+                value={stakeDepositAddress}
+                onChange={(e) => setStakeDepositAddress(e.target.value)}
+                className={`${inputClass} col-span-3`}
+                placeholder="Adres"
+                required
+              />
+            </div>
+          </div>
 
-          <AddressField
-            label="POLYM Deposit"
-            value={formData.polymDeposit}
-            onChange={(val) => setFormData({ ...formData, polymDeposit: val })}
-          />
+          <div>
+            <label className="block text-xs text-gray-400 mb-1">POLYM Deposit</label>
+            <div className="grid grid-cols-4 gap-2">
+              <input
+                type="text"
+                value={polymDepositNetwork}
+                onChange={(e) => setPolymDepositNetwork(e.target.value)}
+                className={inputClass}
+                placeholder="TRC20"
+                required
+              />
+              <input
+                type="text"
+                value={polymDepositAddress}
+                onChange={(e) => setPolymDepositAddress(e.target.value)}
+                className={`${inputClass} col-span-3`}
+                placeholder="Adres"
+                required
+              />
+            </div>
+          </div>
 
-          <AddressField
-            label="STAKE Withdraw"
-            value={formData.stakeWithdraw}
-            onChange={(val) => setFormData({ ...formData, stakeWithdraw: val })}
-          />
+          <div>
+            <label className="block text-xs text-gray-400 mb-1">STAKE Withdraw</label>
+            <div className="grid grid-cols-4 gap-2">
+              <input
+                type="text"
+                value={stakeWithdrawNetwork}
+                onChange={(e) => setStakeWithdrawNetwork(e.target.value)}
+                className={inputClass}
+                placeholder="TRC20"
+                required
+              />
+              <input
+                type="text"
+                value={stakeWithdrawAddress}
+                onChange={(e) => setStakeWithdrawAddress(e.target.value)}
+                className={`${inputClass} col-span-3`}
+                placeholder="Adres"
+                required
+              />
+            </div>
+          </div>
 
-          <AddressField
-            label="POLYM Withdraw"
-            value={formData.polymWithdraw}
-            onChange={(val) => setFormData({ ...formData, polymWithdraw: val })}
-          />
+          <div>
+            <label className="block text-xs text-gray-400 mb-1">POLYM Withdraw</label>
+            <div className="grid grid-cols-4 gap-2">
+              <input
+                type="text"
+                value={polymWithdrawNetwork}
+                onChange={(e) => setPolymWithdrawNetwork(e.target.value)}
+                className={inputClass}
+                placeholder="TRC20"
+                required
+              />
+              <input
+                type="text"
+                value={polymWithdrawAddress}
+                onChange={(e) => setPolymWithdrawAddress(e.target.value)}
+                className={`${inputClass} col-span-3`}
+                placeholder="Adres"
+                required
+              />
+            </div>
+          </div>
 
           <div className="flex gap-2 pt-2">
             <button
