@@ -294,7 +294,7 @@ app.get('/api/snapshots/stats', async (req, res) => {
 });
 
 // SPA fallback - tüm diğer route'ları index.html'e yönlendir
-app.get('*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(join(__dirname, '../dist/index.html'));
 });
 
